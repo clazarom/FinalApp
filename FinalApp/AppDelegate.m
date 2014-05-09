@@ -7,6 +7,11 @@
 //
 
 #import "AppDelegate.h"
+#import <Parse/Parse.h>
+#import <Parse/PFFacebookUtils.h>
+#import <FacebookSDK/FBSession.h>
+#import <Parse/PFTwitterUtils.h>
+#import "LoginViewController.h"
 
 @implementation AppDelegate
 
@@ -15,8 +20,55 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    
+    // ****************************************************************************
+    // Fill in with your Parse and Twitter credentials. Don't forget to add your
+    // Facebook id in Info.plist:
+    // ****************************************************************************
+    
+    [Parse setApplicationId:@"Acdy4cOGK2SMUxabhGlmKx2l3jYCA1SJaRxy3a6n"
+                  clientKey:@"SujIbd4JoG8ycSt5Kk8V7Prik7ORUGUeisG6YJBH"];
+    [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+    
+    [PFFacebookUtils initializeFacebook];
+    [PFTwitterUtils initializeWithConsumerKey:@"your_twitter_consumer_key" consumerSecret:@"your_twitter_consumer_secret"];
+    
+    // Set default ACLs
+    PFACL *defaultACL = [PFACL ACL];
+    [defaultACL setPublicReadAccess:YES];
+    [PFACL setDefaultACL:defaultACL withAccessForCurrentUser:YES];
+    
+
     return YES;
 }
+
+//Push
+- (void)application:(UIApplication *)application
+didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    // Store the deviceToken in the current Installation and save it to Parse.
+    PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+    [currentInstallation setDeviceTokenFromData:deviceToken];
+    [currentInstallation saveInBackground];
+}
+
+// Facebook oauth callback
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    return [PFFacebookUtils handleOpenURL:url];
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    return [PFFacebookUtils handleOpenURL:url];
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+    // Handle an interruption during the authorization flow, such as the user clicking the home button.
+    [FBSession.activeSession handleDidBecomeActive];
+}
+
+
+
 							
 - (void)applicationWillResignActive:(UIApplication *)application
 {
@@ -35,14 +87,13 @@
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
 
-- (void)applicationDidBecomeActive:(UIApplication *)application
-{
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-}
+
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
+
+
 
 @end
