@@ -132,7 +132,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="pwN-eb-v6x" kind="push" identifier="gameMenu" id="2Tc-TB-77C"/>
+                                    <segue destination="pwN-eb-v6x" kind="push" identifier="Game Menu" id="2Tc-TB-77C"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -205,7 +205,7 @@
                         <outlet property="answerTitleLabel" destination="pVH-tZ-vSJ" id="vI3-vj-PrT"/>
                         <outlet property="endButton" destination="TE8-iB-yiC" id="Fky-lo-ELz"/>
                         <outlet property="okButton" destination="TE8-iB-yiC" id="3q6-de-Nfj"/>
-                        <outlet property="questionLabel" destination="C35-VT-Lz2" id="6M8-4E-34V"/>
+                        <outlet property="questionLabel" destination="12f-X1-FbD" id="Pns-gm-vUH"/>
                         <outlet property="questionTitleLabel" destination="C35-VT-Lz2" id="irO-qp-3Oe"/>
                     </connections>
                 </viewController>
@@ -216,7 +216,7 @@
         <!--Menu Game View Controller-->
         <scene sceneID="ObB-5J-4fe">
             <objects>
-                <viewController id="pwN-eb-v6x" customClass="MenuGameViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Game Menu" id="pwN-eb-v6x" customClass="MenuGameViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="PBT-yk-hoL" customClass="Menu">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -258,7 +258,7 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="pGD-qZ-N03"/>
-        <segue reference="3IV-2r-8in"/>
+        <segue reference="gOZ-KD-e2L"/>
+        <segue reference="7zc-3g-NJz"/>
     </inferredMetricsTieBreakers>
 </document>

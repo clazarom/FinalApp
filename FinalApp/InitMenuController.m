@@ -163,17 +163,13 @@
         // Do something with the returned PFObject in the gameScore variable.
     //}];
     
-    NSUInteger limit = 20;
     PFQuery *query = [PFQuery queryWithClassName:@"Game"];
-    [query setLimit: limit];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
             // The find succeeded. Add the returned objects to allObjects
             [_games addObjectsFromArray:objects];
+            NSLog(@"Game Retreived");
 
-            if (objects.count == limit) {
-                // There might be more objects in the table. Update the skip value and execute the query
-                 }
                  
         } else {
             // Log details of the failure
@@ -187,7 +183,7 @@
 #pragma mark - Table view data source
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return [_games count]+1;
+    return [_games count];
 }
 
 
@@ -196,7 +192,8 @@
     static NSString *CellIdentifier = @"InitCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     // Configure the cell
-    cell.textLabel.text =[NSString stringWithFormat:@"Game number: %d", indexPath.row];
+    PFObject *rowMap = [_games objectAtIndex:indexPath.row];
+    cell.textLabel.text =[NSString stringWithFormat:@"Game number: %@", rowMap[@"entity"]];
     
     return cell;
 

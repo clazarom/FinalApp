@@ -56,6 +56,7 @@
     //Label and field
     self.questionLabel.text = _question;
     self.answerField.delegate=self;
+    self.questionTitleLabel.text = @"Question";
     //NSLog(@"Map chal load(challengeView): %@", _game);
     //NSLog(@"pLAYABLE chal load(challengeView): %@", _game._playableLocations);
     

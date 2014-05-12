@@ -141,7 +141,6 @@
 -(void)startAChallenge: (NSString *) location{
     //Get challenge
     
-    
     //Segue for Challenge view
     ChallengeViewController *myController =[self.storyboard instantiateViewControllerWithIdentifier:@"Challenge"];
     //ChallengeViewController *myController =[[ChallengeViewController alloc] initWithNibName:@"MainWindow" bundle:nil];
@@ -232,6 +231,16 @@
 
 //Detect when entering a region
 -(void) locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region{
+}
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sende{
+    if ([[segue identifier] isEqualToString:@"Game Menu"]){
+        // Get reference to the destination view controller
+        MenuGameViewController *vc = [segue destinationViewController];
+        vc._map = [GameMap startANewGame:*(_gameMap._entity)];
+        [vc._map initWithAnotherMap:_gameMap];
+        [vc setTitle:@"Menu"];
+    }
+
 }
 
 

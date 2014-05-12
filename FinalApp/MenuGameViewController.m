@@ -10,14 +10,15 @@
 
 @interface MenuGameViewController (){
     NSString *_appFile;
-    GameMap *_map;
 }
 
 @end
 
+
 @implementation MenuGameViewController
 
 @synthesize _menuGameTable;
+@synthesize _map;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -44,7 +45,7 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     self._menuGameTable=nil;
-    
+    self._map = nil;
     
 }
 
@@ -109,7 +110,6 @@
         NSCoder *idEncoder;
         int entity;
         entity = [_map encodeWithCoder:mapEncoder];
-        [idEncoder encodeObject:mapEncoder forKey:[NSString stringWithFormat:@"%d", entity]];
         
         //Pass parameters to initMenu
         vc._gameToSave = idEncoder;
@@ -128,27 +128,57 @@
 //Save to parse
 -(void) saveMapToParse{
     //Save Parse object
-    PFObject *gameParameters = [PFObject objectWithClassName:@"Game"];
+    PFObject *gameParameters =[PFObject objectWithClassName:@"Game"];
+    //NSCoder *encoder =[[NSCoder alloc] init];
+    //[_map encodeWithCoder:encoder];
+    //NSLog(@"%@", encoder);
+    //gameParameters[@"parameters"]=[NSString stringWithFormat:@"%@", encoder] ;
+
     gameParameters[@"entity"] = [NSString stringWithFormat:@"%d", _map._entity];
     gameParameters[@"score"] = [NSString stringWithFormat:@"%d", _map._score];
-    gameParameters[@"currentLevel"] = [NSString stringWithFormat:@"%@", _map._currentLevel];
-    gameParameters[@"levels"] = [NSString stringWithFormat:@"%@", _map._levels];
-    gameParameters[@"importantLocations"] = [NSString stringWithFormat:@"%@", _map._importantLocations];
-    gameParameters[@"playableLocations"] = [NSString stringWithFormat:@"%@", _map._playableLocations];
-    gameParameters[@"finishedLocations"] = [NSString stringWithFormat:@"%@", _map._finishedLocations];
-    gameParameters.objectId = [NSString stringWithFormat: @"%d",_map._entity];
-    //Save the parse object
-    [gameParameters saveInBackground];
+    gameParameters[@"level"] = [NSString stringWithFormat:@"%@", [_map._currentLevel objectAtIndex:0]];
+    NSArray *keys = [_map._playableLocations allKeys];
+    int i = 0;
+    for (NSString* value in keys){
+        NSString *category = [NSString stringWithFormat:@"%@%d", @"play", i];
+        gameParameters [category] = value;
+        NSLog(@"%@  %d", category, i);
+        i++;
+    }
 
-     //Link it to the current user
-     PFUser *user = [PFUser currentUser];
-     PFRelation *relation = [user relationforKey:@"maps"];
-     [relation addObject:gameParameters];
-     [user saveInBackground];
+
+    
+    //Save the parse object
+    //NSLog(@"Game id: %@",[gameParameters objectId]);
+
+    [gameParameters saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        if (!error){
+           
+        }
+        else{
+            NSLog (@"Error: %@", error);
+        }
+    }];
+    
+    //Make a fi
+    
+    while (![gameParameters objectId]){
+        NSLog(@"... Waiting for Parse.com ");
+        
+    }
+    //Link it to the current user
+    PFUser *user = [PFUser currentUser];
+    PFRelation *relation = [user relationforKey:@"maps"];
+    //[relation addObject:gameParameters];
+    [user saveEventually];
+    
 
 }
 
++(void)addArrayToPFObject: (PFObject *) pf :(NSDictionary *) array and :(NSString *) param{
 
+    
+}
 
 
 @end

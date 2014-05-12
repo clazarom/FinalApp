@@ -12,6 +12,8 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "GameMap.h"
 #import "ChallengeViewController.h"
+#import "MenuGameViewController.h"
+
 
 
 
@@ -20,5 +22,6 @@
 @property GameMap *_gameMap;
 @property (weak, nonatomic) IBOutlet MKMapView *_gameView;
 @property (weak, nonatomic) IBOutlet UIButton *menuButton;
+
 
 @end

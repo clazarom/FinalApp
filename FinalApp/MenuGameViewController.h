@@ -15,5 +15,8 @@
 
 @interface MenuGameViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
+@property GameMap *_map;
 @property (weak, nonatomic) IBOutlet UITableView *_menuGameTable;
++(void)addArrayToPFObject: (PFObject *) pf :(NSDictionary *) array and :(NSString *) param;
+
 @end
